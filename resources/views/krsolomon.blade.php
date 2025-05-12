@@ -82,7 +82,13 @@
                 </a>
                 <a href="/map" class="first-link">Контакты</a>
                 <a href="/katalog" class="nav-link">Каталог</a>
-                <a href="/cart" class="nav-link">Корзина</a>
+                <a href="{{ route('cart') }}" class="nav-link relative">
+    Корзина
+    <span id="cart-counter" class="absolute -top-2 -right-4 bg-red-500 text-white text-xs rounded-full h-5 w-5 items-center justify-center" 
+          style="display: {{ auth()->check() && auth()->user()->cart()->count() > 0 ? 'flex' : 'none' }}">
+        {{ auth()->check() ? auth()->user()->cart()->count() : 0 }}
+    </span>
+</a>
             </div>
 
             @auth
@@ -169,11 +175,9 @@
                 сквозь мембрану. 
               </p>
 
-              <button
-                class="buy-btn self-center px-10 py-4 mt-7 max-w-full text-base font-semibold whitespace-nowrap rounded-md bg-zinc-600 bg-opacity-70 w-[140px] max-md:px-5 hover:bg-opacity-90"
-              >
-                Купить
-              </button>
+              <button type="submit"  class="buy-btn self-center mt-5 px-10 py-4 max-w-full text-base font-semibold whitespace-nowrap rounded-md bg-zinc-600 bg-opacity-70 w-[260px] max-md:px-5 hover:bg-opacity-90">
+                        Добавить в корзину
+                    </button>
             </div>
           </div>
         </div>
@@ -265,6 +269,17 @@
   </div>
   
   <script>
+    function updateCartCount() {
+    fetch('{{ route("cart.count") }}')
+        .then(response => response.json())
+        .then(data => {
+            const counter = document.getElementById('cart-counter');
+            if (counter) {
+                counter.textContent = data.count;
+                counter.classList.toggle('hidden', data.count === 0);
+            }
+        });
+    }
     // Выбор размера
     function selectSize(button) {
       // Убираем выделение у всех кнопок размера

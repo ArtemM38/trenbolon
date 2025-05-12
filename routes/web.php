@@ -46,9 +46,7 @@ Route::get('/kepmanto', function () {
 Route::get('/kofhard', function () {
     return view('kofhard');
 });
-Route::get('/krsolomon', function () {
-    return view('krsolomon');
-});
+
 Route::get('/krtyr', function () {
     return view('krtyr');
 });
@@ -56,6 +54,11 @@ Route::get('/kyrredfox', function () {
     $productId = 1; // Замените на фактический ID товара в вашей БД
     $product = \App\Models\Product::find($productId);
     return view('kyrredfox', ['product' => $product]);
+});
+Route::get('/krsolomon', function () {
+    $productId = 2; // Замените на фактический ID товара в вашей БД
+    $product = \App\Models\Product::find($productId);
+    return view('krsolomon', ['product' => $product]);
 });
 Route::get('/lk', function () {
     return view('lk');
